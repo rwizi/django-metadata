@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes import fields
 import json
 
 
@@ -15,7 +15,7 @@ class MetaDataManager(models.Manager):
         """
 
         try:
-            return self.get_query_set().get(name=key).value
+            return self.get_queryset().get(name=key).value
         except MetaData.DoesNotExist, e:
             return None
 
@@ -40,7 +40,7 @@ class MetaDataManager(models.Manager):
         return self.iteritems()
 
     def iterkeys(self):
-        for metadata in self.get_query_set().order_by('name'):
+        for metadata in self.get_queryset().order_by('name'):
             yield metadata.name
 
     def keys(self):
@@ -49,14 +49,14 @@ class MetaDataManager(models.Manager):
     def itervalues(self):
         # This way we can zip iterkeys and itervalues and retrieve the correct
         # information
-        for metadata in self.get_query_set().order_by('name'):
+        for metadata in self.get_queryset().order_by('name'):
             yield metadata.value
 
     def values(self):
         return list(self.itervalues())
 
     def iteritems(self):
-        for metadata in self.get_query_set().order_by('name'):
+        for metadata in self.get_queryset().order_by('name'):
             yield metadata.name, metadata.value
 
     def items(self):
@@ -66,10 +66,9 @@ class MetaDataManager(models.Manager):
 class MetaData(models.Model):
     name = models.CharField(max_length=256, db_index=True)
     value = models.CharField(max_length=256, db_index=True)
-
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = fields.GenericForeignKey('content_type', 'object_id')
 
     objects = MetaDataManager()
 
@@ -81,9 +80,6 @@ class MetaData(models.Model):
         return self.name, self.value
 
     def __repr__(self):
-        return json.dumps(dict(
-            name=self.name,
-            value=self.value,
-            content_type=self.content_type.name,
-            object_id=self.object_id,
-        ))
+        return json.dumps(
+            dict(name=self.name, value=self.value, content_type=self.content_type.name, object_id=self.object_id,
+                 ))

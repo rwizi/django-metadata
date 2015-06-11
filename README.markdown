@@ -1,6 +1,6 @@
 # django-metadata addon
 
-This is a simple addon to your models, with this package you can add metadata to any of your models.
+This is a simple addon to your models, with this package you can add metadata to any of your models. This fork supports Django 1.8 
 
 By *metadata* we understand attributes/values that are not commonly shared across all instances of a particular model.
 
@@ -12,33 +12,22 @@ If you have a `Product` model and your instance is about Digital Cameras, you ma
 Clone django-metadata somewhere:
 
 ````bash
-git clone git://github.com/rafaelsdm/django-metadata.git
+sudo pip install git+https://github.com/rwizi/django-metadata.git
 ```
-
-
-Add `django-metadata` into `PYTHONPATH`:
-
-```bash
-export PYTHONPATH=$PYTHONPATH:/somewhere/django-metadata
-```
-
-Remember to replace `/somewhere/` to the path where you cloned the code.
-
-You can also add the line above into your `~/.bashrc`.
 
 ## Using
 
-Import `metadata.models.MetaData` into your `model.py` file and create a `django.contrib.contenttypes.generic.GenericRelation` field where you want to use meta data
+Import `metadata.models.MetaData` into your `model.py` file and create a `django.contrib.contenttypes.fields.GenericRelation` field where you want to use meta data
 
 ```python
 # THIS IS JUST AN EXAMPLE
 from django.db import models
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes import fields
 from metadata.models import MetaData
 
 class MyModel(models.Model):
     foo = models.CharField(null=True, blank=True, max_length=1)
-    metadata = generic.GenericRelation(MetaData)
+    metadata = fields.GenericRelation(MetaData)
 
 ```
 
@@ -74,6 +63,4 @@ So it will check if `mymodel` object has the metadata `something` into it
 
 This is not a replacement for fields into models, you should use it when some records have some data that other records (in the same table) have not.
 
-As it's a very simple model with basic usage of GenericRelations and
-Manager objects, it works pretty much with all 1.x versions of Django
-(so far)
+As it's a very simple model with basic usage of GenericRelations.
