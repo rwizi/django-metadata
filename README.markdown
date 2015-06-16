@@ -9,8 +9,6 @@ If you have a `Product` model and your instance is about Digital Cameras, you ma
 
 ## Install
 
-Clone django-metadata somewhere:
-
 ````bash
 sudo pip install git+https://github.com/rwizi/django-metadata.git
 ```
