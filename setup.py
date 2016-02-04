@@ -2,8 +2,8 @@ from setuptools import setup
 
 setup(
     name='django-metadata',
-    version='1.0',
-    url='https://github.com/rafaelsdm/django-metadata',
+    version='1.2',
+    url='https://github.com/rwizi/django-metadata',
     author='Rafael Sierra',
     author_email='eu@rafaelsdm.com',
     license='Free Use',
